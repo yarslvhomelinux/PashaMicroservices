@@ -1,1 +1,1 @@
-# PashaMicroservices
+Pet project with presentation of microservices
