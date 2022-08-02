@@ -29,6 +29,12 @@ services:
       - postgres
     restart: unless-stopped
 
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9412:9412"
+
 networks:
   postgres:
     driver: bridge
