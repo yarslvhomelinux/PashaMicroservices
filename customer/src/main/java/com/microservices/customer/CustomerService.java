@@ -1,5 +1,6 @@
 package com.microservices.customer;
 
+import com.microservices.amqp.RabbitMQMessageProducer;
 import com.microservices.clients.fraud.FraudCheckResponse;
 import com.microservices.clients.fraud.FraudClient;
 import com.microservices.clients.notification.NotificationRequest;
@@ -14,6 +15,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
     private final FraudClient fraudClient;
+    private final RabbitMQMessageProducer messageProducer;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
@@ -22,7 +24,6 @@ public class CustomerService {
                 .email(request.email())
                 .build();
 
-        //todo: check if email valid
         customerRepository.saveAndFlush(customer);
         FraudCheckResponse response = fraudClient.isFraudster(customer.getId());
 
@@ -33,8 +34,12 @@ public class CustomerService {
         NotificationRequest notificationRequest = new NotificationRequest(
                 customer.getId(),
                 customer.getEmail(),
-                String.format("Hi %s, welcome to Amigoscode...",
+                String.format("Hi %s, welcome to PashaMicroservices...",
                         customer.getFirstName())
         );
+        messageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key");
     }
 }
