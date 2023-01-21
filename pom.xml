@@ -13,7 +13,7 @@
         <module>customer</module>
         <module>fraud</module>
         <module>eureka-server</module>
-<!--        <module>clients</module>-->
+        <module>clients</module>
         <module>notification</module>
         <module>api-gateway</module>
 <!--        <module>amqp</module>-->
@@ -37,7 +37,7 @@
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
+                <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.dependencies.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
@@ -101,9 +101,19 @@
                             </platforms>
                         </from>
                         <to>
-                            <tags>latest</tags>
+                            <tags>
+                                <tag>latest</tag>
+                            </tags>
                         </to>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

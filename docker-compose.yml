@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:14
     environment:
       POSTGRES_USER: amigoscode
       POSTGRES_PASSWORD: root
@@ -46,30 +46,30 @@ services:
     networks:
       - spring
 
-  eureka-server:
-    image: liroykaz/eureka-server:latest
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
+#  eureka-server:
+#    image: liroykaz/eureka-server:latest
+#    container_name: eureka-server
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
 
-  api-gateway:
-    image: liroykaz/api-gateway:latest
-    container_name: api-gateway
-    ports:
-      - "8083:8083"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
-      - eureka-server
+#  api-gateway:
+#    image: liroykaz/api-gateway:latest
+#    container_name: api-gateway
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
+#      - eureka-server
 
   customer:
     image: liroykaz/customer:latest
@@ -83,7 +83,6 @@ services:
       - postgres
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
 
@@ -99,7 +98,6 @@ services:
       - postgres
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
 
@@ -115,7 +113,6 @@ services:
       - postgres
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
 
